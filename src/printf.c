@@ -79,7 +79,7 @@ vsprintf(char * buf, const char * fmt, va_list va)
                 num = -num;
                 flags |= PUT_MINUS;
             }
-            buf = sitoa(buf, num, num, flags | BASE_10);
+            buf = sitoa(buf, num, width, flags | BASE_10);
             }
             break;
 	case 'a':

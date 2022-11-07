@@ -6,6 +6,7 @@ CFLAGS = -Wall -DLIBIO -mcpu=68000 -msoft-float -O
 SRCS = \
 	src/ctype.c \
 	src/printf.c \
+	src/sscanf.c \
 	src/stdio.c \
 	src/stdlib.c \
 	src/malloc.c \
@@ -25,8 +26,7 @@ install:	libc.a libio.a
 libc.a:	$(OBJS)
 	$(AR) crv $@ $^
 
-#libio.a: io/m68k.o
-libio.a: io/m68k_acia.o
+libio.a: io/m68k_acia.o io/m68k_timer.o io/dos.o
 	$(AR) crv $@ $^
 
 clean:

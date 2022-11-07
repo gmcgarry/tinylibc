@@ -63,13 +63,3 @@ strlen(const char *s)
 		cnt++;
 	return cnt;
 }
-
-#if 0
-        clr.l   d0
-        move.l  4(sp),a0
-        bra     2f
-1:      add.l   #1,d0
-2:      cmp.b   #0,(a0)+
-        bne     1b
-        rts
-#endif

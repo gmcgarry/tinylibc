@@ -30,7 +30,10 @@ _getchar:
 	BEQ     1b
 	MOVE.B  ACIADA,%d0
 	AND.B   #0x7F,%d0
-	RTS
+	CMP.B	#'\r',%d0
+	BNE	2f
+	MOVE.B	#'\n',%d0
+2:	RTS
 
 	.globl _kbhit
 	.p2align 1

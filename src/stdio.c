@@ -27,6 +27,7 @@ fgetc(FILE *fp)
 	if (read(fp->_fd, &ch, 1) != 1)
 		return EOF;
 #endif
+	putchar(ch);
 
 	return (int)ch;
 }
@@ -89,7 +90,7 @@ fgets(char *s, int n, FILE *fp)
 	for (c = 0, cp = s; c != '\n' && n > 0; n--, cp++) {
 		if ((c = fgetc(fp)) == EOF)
 			return NULL;
-		*cp = (char)c;
+		*cp = c;
 	}
 	*cp = '\0';
 

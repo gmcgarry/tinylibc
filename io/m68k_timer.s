@@ -13,13 +13,11 @@ callback:	DC.L	0
 	.section .text
 	.p2align 2
 isr:	MOVEM.L	%d0-%d1/%a0-%a1,-(%sp)
-	MOVE.L	#REGS,%a0
-	BTST.B	#2,CD(%a0)
-	BEQ	1f		| not for us
-	MOVE.B	#0,CD(%a0)	| clear interrupt
 	MOVE.L	callback,%a0
 	JSR	(%a0)
-1:	MOVEM.L	(%sp)+,%d0-%d1/%a0-%a1
+	MOVE.L	#REGS,%a0
+	MOVE.B	#0,CD(%a0)
+	MOVEM.L	(%sp)+,%d0-%d1/%a0-%a1
 	RTE
 
 	.globl	_timer_on
@@ -31,7 +29,7 @@ _timer_on:
 	LEA	isr,%a0
 	MOVE.L	%a0,26*4	| L2 ISR
 	MOVE.L	#REGS,%a0
-|	MOVE.B	#4,CF(%a0)	| TEST=0, 24HOUR=1, STOP=0, REST=0
+	MOVE.B	#4,CF(%a0)	| TEST=0, 24HOUR=1, STOP=0, REST=0
 |	MOVE.B	#6,CE(%a0)	| enable one-second clock interrupts
 	MOVE.B	#2,CE(%a0)	| enable 1/64 clock interrupts
 	MOVE.B	#0,CD(%a0)	| clear clock interrupt

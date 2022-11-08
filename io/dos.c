@@ -26,9 +26,6 @@ settime(const struct time* ti)
 {
 	struct regs *regs = (void *)0xFFFFD000;
 
-	printf("setting time to %02d:%02d:%02d\n",
-		ti->ti_hour, ti->ti_min, ti->ti_sec);
-
 	regs->ctl_d = 0;
 	regs->ctl_e = 1;	// disable STD.P
 	regs->ctl_f = 4;
@@ -48,8 +45,7 @@ setdate(const struct date* dt)
 {
 	struct regs *regs = (void *)0xFFFFD000;
 
-	printf("setting date to %02d/%02d/%04d\n",
-		dt->da_day, dt->da_mon, dt->da_year);
+	int year = dt->da_year - 1970;
 
 	regs->ctl_d = 0;
 	regs->ctl_e = 1;	// disable STD.P
@@ -61,8 +57,8 @@ setdate(const struct date* dt)
 	regs->mon_lo = dt->da_mon % 10;
 	regs->mon_hi = dt->da_mon / 10;
 
-	regs->year_lo = dt->da_year % 10;
-	regs->year_hi = dt->da_year / 10;
+	regs->year_lo = year % 10;
+	regs->year_hi = year / 10;
 }
 
 void
@@ -70,9 +66,9 @@ gettime(struct time* ti)
 {
 	struct regs *regs = (void *)0xFFFFD000;
 
-	ti->ti_sec = regs->sec_hi * 10 + regs->sec_lo;
-	ti->ti_min = regs->min_hi * 10 + regs->min_lo;
-	ti->ti_hour = regs->hour_hi * 10 + regs->hour_lo;
+	ti->ti_sec = (regs->sec_hi & 0xF) * 10 + (regs->sec_lo & 0xF);
+	ti->ti_min = (regs->min_hi & 0xF) * 10 + (regs->min_lo & 0xF);
+	ti->ti_hour = (regs->hour_hi & 0xF) * 10 + (regs->hour_lo & 0xF);
 }
 
 void
@@ -80,7 +76,7 @@ getdate(struct date* dt)
 {
 	struct regs *regs = (void *)0xFFFFD000;
 
-	dt->da_day = regs->day_hi * 10 + regs->day_lo;
-	dt->da_mon = regs->mon_hi * 10 + regs->mon_lo;
-	dt->da_year = 2000 + regs->year_hi * 10 + regs->year_lo;
+	dt->da_day = (regs->day_hi & 0xF) * 10 + (regs->day_lo & 0xF);
+	dt->da_mon = (regs->mon_hi & 0xF) * 10 + (regs->mon_lo & 0xF);
+	dt->da_year = 1970 + (regs->year_hi & 0xF) * 10 + (regs->year_lo & 0xF);
 }

@@ -12,12 +12,12 @@ sscanf(const char *str, const char *format, ...)
 			int positive;
 			int value;
 			int *valp;
-			
 			if (*str == '-') {
 				positive = 0;
 				str++;
-			} else
+			} else {
 				positive = 1;
+			}
 			if (!isdigit(*str))
 				break;
 			value = 0;

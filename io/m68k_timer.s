@@ -2,9 +2,9 @@
 
 REGS	=	0xFFFFD000
 
-CD	=	13		|; 30-sec adjust, IRQ, BUSY, HOLD
-CE	=	14		|; t1, t0, ITRPT/STND, MASK
-CF	=	15		|; TEST, 24/12, STOP, REST
+CD	=	13		| 30-sec adjust, IRQ, BUSY, HOLD
+CE	=	14		| t1, t0, ITRPT/STND, MASK
+CF	=	15		| TEST, 24/12, STOP, REST
 
 	.section .data
 	.p2align 2
@@ -13,10 +13,12 @@ callback:	DC.L	0
 	.section .text
 	.p2align 2
 isr:	MOVEM.L	%d0-%d1/%a0-%a1,-(%sp)
-	MOVE.L	callback,%a0
+1:	MOVE.L	callback,%a0
 	JSR	(%a0)
 	MOVE.L	#REGS,%a0
-	MOVE.B	#0,CD(%a0)
+	CLR.B	CD(%a0)		| does read-before-write, which helps
+	BTST.B	#2,CD(%a0)
+	BNE	1b
 	MOVEM.L	(%sp)+,%d0-%d1/%a0-%a1
 	RTE
 
@@ -50,3 +52,21 @@ _timer_off:
 _yield:
 	STOP	#0
 	RTS
+
+| hack for MC68008 @ 10MHz (10000 cycles per millisecond)
+	.globl	delay
+	.p2align 2
+delay:
+	MOVE.L	4(%sp),%d0
+1:	JSR	delay1ms
+	SUB.L	#1,%d0
+	BNE	1b
+	RTS
+
+delay1ms:			| 34T for JSR
+	MOVE.W	#332,%d1	| 12T
+1:	SUB.W	#1,%d1		| 8T + 4T
+	BNE	1b		| 8T + 10T (taken)
+	RTS			| 32T
+
+	.END

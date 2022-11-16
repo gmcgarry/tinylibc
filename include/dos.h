@@ -19,4 +19,10 @@ void setdate(const struct date* dt);
 void gettime(struct time* ti);
 void getdate(struct date* dt);
 
+void delay(unsigned int ms);
+void sleep(unsigned int seconds);
+
+void sound(unsigned int freq);
+void nosound(void);
+
 #endif

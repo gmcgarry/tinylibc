@@ -1,8 +1,7 @@
 #include <stdio.h>
 
 #ifdef LIBIO
-extern void _putchar(char c);
-extern char _getchar(void);
+#include <conio.h>
 #else
 #include <unistd.h>
 #endif
@@ -22,12 +21,11 @@ fgetc(FILE *fp)
 		return EOF;
 
 #ifdef LIBIO
-	ch = _getchar();
+	ch = getche();
 #else
 	if (read(fp->_fd, &ch, 1) != 1)
 		return EOF;
 #endif
-	putchar(ch);
 
 	return (int)ch;
 }
@@ -41,7 +39,7 @@ fputc(int _c, FILE *fp)
 		return EOF;
 
 #ifdef LIBIO
-	_putchar(ch);
+	putch(ch);
 #else
 	if (write(fp->_fd, &ch, 1) != 1)
 		return EOF;
@@ -61,7 +59,7 @@ fputs(const char *s, FILE *fp)
 
 	while ((c = *s++) != '\0') {
 #ifdef LIBIO
-		_putchar(c);
+		putch(c);
 #else
 		if (write(fp->_fd, &c, 1) != 1)
 			rv = EOF;
@@ -69,7 +67,7 @@ fputs(const char *s, FILE *fp)
 	}
 	c = '\n';
 #ifdef LIBIO
-	_putchar(c);
+	putch(c);
 #else
 	if (write(fp->_fd, &c, 1) != 1)
 		rv = EOF;

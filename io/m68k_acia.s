@@ -5,8 +5,11 @@ MONITR	=	0xFFFF8362
 ACIACS	=	0xFFFFD800
 ACIADA	=	0xFFFFD801
 
+	.text
+	.globl	putch
 	.globl	_putchar
 	.p2align 1
+putch:
 _putchar:
 	MOVE.L	4(%sp),%d0
 	CMP.B	#'\n',%d0
@@ -22,21 +25,34 @@ _putchar:
 	MOVE.B  %d0,ACIADA
 	RTS
 
+	.globl getch
 	.globl _getchar
 	.p2align 1
+getch:
 _getchar:
 1:	MOVE.B  ACIACS,%d0
 	AND.B   #1,%d0
 	BEQ     1b
 	MOVE.B  ACIADA,%d0
-	AND.B   #0x7F,%d0
-	CMP.B	#'\r',%d0
-	BNE	2f
-	MOVE.B	#'\n',%d0
+;	AND.B   #0x7F,%d0
+;	CMP.B	#'\r',%d0
+;	BNE	2f
+;	MOVE.B	#'\n',%d0
 2:	RTS
 
+	.globl getche
+	.p2align 1
+getche:
+	JSR	getch
+	MOVE.L	%d0,-(%sp)
+	JSR	putch
+	MOVE.L	(%sp)+,%d0
+	RTS
+
+	.globl kbhit
 	.globl _kbhit
 	.p2align 1
+kbhit:
 _kbhit:
 	MOVE.B  ACIACS,%d0
 	AND.L	#1,%d0

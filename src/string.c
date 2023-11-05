@@ -1,7 +1,7 @@
 #include "string.h"
 
-void
-*memcpy(void *_s1, const void *_s2, size_t _n)
+void *
+memcpy(void *_s1, const void *_s2, size_t _n)
 {
 	unsigned char *s1 = _s1;
 	const unsigned char *s2 = _s2;
@@ -12,8 +12,8 @@ void
 	return _s1;
 }
 
-void
-*memmove(void *_s1, const void *_s2, size_t _n)
+void *
+memmove(void *_s1, const void *_s2, size_t _n)
 {
 	unsigned char *s1 = _s1;
 	const unsigned char *s2 = _s2;
@@ -59,7 +59,18 @@ size_t
 strlen(const char *s)
 {
 	size_t cnt = 0;
-	while (*s++ == 0)
+	while (*s++)
 		cnt++;
 	return cnt;
+}
+
+void *
+memchr(const void *s, int c, size_t n)
+{
+	unsigned char *p = (unsigned char *)s;
+	unsigned char *end = p + n;
+	for (; p != end; p++)
+		if (*p == (unsigned char)c)
+			return p;
+	return 0;
 }

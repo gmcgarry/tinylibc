@@ -51,3 +51,50 @@ abort(void)
 {
 	_exit(1);
 }
+
+static unsigned long next = 1;
+
+void
+srand(unsigned int seed)
+{
+	next = seed;
+}
+
+int
+rand(void)
+{
+ 	next = next * 1103515245;
+	next += 12345;
+	return (next % (RAND_MAX + 1));
+}
+
+int
+abs(int j)
+{
+	return(j < 0 ? -j : j);
+}
+
+long
+labs(long j)
+{
+	return(j < 0 ? -j : j);
+}
+
+void *
+bsearch(const void *key, const void *base, size_t nmemb, size_t size, int (*_compar)(const void *, const void *))
+{
+	for (const char *left = base; nmemb; ) {
+		const char *middle = left + nmemb / 2 * size;
+		int c = (*_compar)(key, middle);
+		if (c < 0) {
+			nmemb = nmemb / 2;
+		} else if (c > 0) {
+			left = middle + size;
+			nmemb = (nmemb - 1) / 2;
+		} else {
+			return middle;
+		}
+	}
+
+	return 0;
+}

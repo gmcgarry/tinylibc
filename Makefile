@@ -1,8 +1,20 @@
-CC=m68k-linux-gnu-pcc
-AS=m68k-linux-gnu-as
+#ARCH=m68k
+#PLATFORM=$(ARCH)-linux-gnu
+#CFLAGS = -mcpu=68000 -msoft-float -O
 
-ASFLAGS=
-CFLAGS = -Wall -DLIBIO -mcpu=68000 -msoft-float -O
+ARCH=x86_64
+PLATFORM=$(ARCH)-linux-gnu
+
+#ARCH=pdp11
+#PLATFORM=$(ARCH)-none
+
+#CFLAGS += -DLIBIO
+
+CC = $(PLATFORM)-pcc
+AS = $(PLATFORM)-as
+
+ASFLAGS =
+CFLAGS += -Wall -O
 SRCS = \
 	src/ctype.c \
 	src/printf.c \
@@ -17,23 +29,33 @@ SRCS = \
 HDRS = $(wildcard include/*.h include/sys/*.h include /machine/*.h)
 OBJS = $(SRCS:.c=.o)
 
-INC=-nostdinc -I./include -I/usr/local/lib/pcc/m68k-unknown-linux-gnu/1.2.0.DEVEL/include/
+INC=-nostdinc -I./include -I/usr/local/lib/pcc/$(PLATFORM)/1.2.0.DEVEL/include/
 
 .PHONY: $(HDRS)
 
 all:	libc.a libio.a
 
-install:	 libc.a libio.a
-	cp libc.a libio.a /usr/local/m68k-linux-gnu/lib/
+install:	 install_headers install_libs
+
+install_libs:	 libc.a libio.a
+	mkdir -p /usr/local/$(PLATFORM)/lib/
+	cp libc.a libio.a /usr/local/$(PLATFORM)/lib/
+
+install_headers:
+	mkdir -p /usr/local/$(PLATFORM)/include
+	cp -r include/* /usr/local/$(PLATFORM)/include
 
 libc.a:	$(OBJS)
 	$(AR) crv $@ $^
 
-libio.a: io/m68k_acia.o io/m68k_timer.o io/dos.o
+LIBIO_C_SOURCES = $(wildcard io/$(ARCH)_*.c)
+LIBIO_ASM_SOURCES = $(wildcard io/$(ARCH)_*.s)
+LIBIO_OBJECTS = $(LIBIO_C_SOURCES:.c=.o) $(LIBIO_ASM_SOURCES:.s=.o)
+libio.a: $(LIBIO_OBJECTS)
 	$(AR) crv $@ $^
 
 clean:
-	$(RM) -f $(OBJS) libc.a libio.a
+	$(RM) -f $(OBJS) $(LIBIO_OBJECTS) libc.a libio.a
 
 .SUFFIXES: .c .h .s .o
 

@@ -42,12 +42,16 @@ USART1_putch(char c)
 static char
 USART1_getch(void)
 {
-	return 0;
+      	while (!(USART1->SR & USART_SR_RXNE))
+		;
+	char c = USART1->DR;
+	return c;
 }
 
 void
 putch(int c)
 {
+	if (c == '\n') USART1_putch('\r');
 	USART1_putch(c);
 }
 
@@ -68,7 +72,7 @@ getche()
 int
 kbhit(void)
 {
-	return 0;
+      	return (USART1->SR & USART_SR_RXNE) != 0;
 }
 
 void

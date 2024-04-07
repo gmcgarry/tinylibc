@@ -51,7 +51,7 @@ USART1_getch(void)
 void
 putch(int c)
 {
-	if (c == '\n') USART1_putch('\r');
+	if (c == '\r') USART1_putch('\n');
 	USART1_putch(c);
 }
 

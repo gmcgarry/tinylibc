@@ -2,6 +2,8 @@
 
 #include <stdint.h>
 
+// dos.h date implementation using MSM6242B RTC.
+
 struct regs {
 	uint8_t sec_lo;
 	uint8_t sec_hi;

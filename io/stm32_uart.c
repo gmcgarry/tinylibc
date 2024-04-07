@@ -6,7 +6,7 @@
 
 #include "stm32f103x6.h"
 
-static void
+void
 USART1_init(uint32_t baudrate)
 {
 	// enable clock for GPIOA and USART1
@@ -43,13 +43,6 @@ static char
 USART1_getch(void)
 {
 	return 0;
-}
-
-
-void
-__libc_init()
-{
-	USART1_init(9600);
 }
 
 void

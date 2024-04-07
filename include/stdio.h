@@ -63,5 +63,6 @@ extern FILE *fopen(const char *, const char *);
 extern int fclose(FILE *);
 
 int printf(const char* format, ...);
+int sprintf(char *str, const char *format, ...);
 
 #endif

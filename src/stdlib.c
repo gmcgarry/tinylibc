@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <unistd.h>	// for _exit()
 
-extern __malloc_cleanup();
+extern void __malloc_cleanup();
 
 struct _atexit {
 	struct _atexit *next;

@@ -14,4 +14,5 @@ int
 kill(pid_t pid, int sig)
 {
 	abort();
+	return 0;
 }

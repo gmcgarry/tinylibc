@@ -1,20 +1,31 @@
+ARCH=arm
+PLATFORM=$(ARCH)-none-eabi
+CFLAGS = -mfloat-abi=soft -mthumb -mcpu=cortex-m3
+CC = $(PLATFORM)-gcc
+AS = $(PLATFORM)-as
+INC = -fno-builtin -nostdinc -I./include -I/usr/lib/gcc/arm-none-eabi/12.2.1/include/
+CFLAGS += -DLIBIO
+MACH=stm32
+
 #ARCH=m68k
 #PLATFORM=$(ARCH)-linux-gnu
 #CFLAGS = -mcpu=68000 -msoft-float -O
 
-ARCH=x86_64
-PLATFORM=$(ARCH)-linux-gnu
+#ARCH=x86_64
+#PLATFORM=$(ARCH)-linux-gnu
 
 #ARCH=pdp11
 #PLATFORM=$(ARCH)-none
 
-#CFLAGS += -DLIBIO
+CC ?= $(PLATFORM)-pcc
+AS ?= $(PLATFORM)-as
 
-CC = $(PLATFORM)-pcc
-AS = $(PLATFORM)-as
+MACH ?= $(ARCH)
 
 ASFLAGS =
 CFLAGS += -Wall -O
+INC ?= -nostdinc -I./include -I/usr/local/lib/pcc/$(PLATFORM)/1.2.0.DEVEL/include/
+
 SRCS = \
 	src/ctype.c \
 	src/printf.c \
@@ -29,7 +40,6 @@ SRCS = \
 HDRS = $(wildcard include/*.h include/sys/*.h include /machine/*.h)
 OBJS = $(SRCS:.c=.o)
 
-INC=-nostdinc -I./include -I/usr/local/lib/pcc/$(PLATFORM)/1.2.0.DEVEL/include/
 
 .PHONY: $(HDRS)
 
@@ -48,8 +58,8 @@ install_headers:
 libc.a:	$(OBJS)
 	$(AR) crv $@ $^
 
-LIBIO_C_SOURCES = $(wildcard io/$(ARCH)_*.c)
-LIBIO_ASM_SOURCES = $(wildcard io/$(ARCH)_*.s)
+LIBIO_C_SOURCES = $(wildcard io/$(MACH)_*.c)
+LIBIO_ASM_SOURCES = $(wildcard io/$(MACH)_*.s)
 LIBIO_OBJECTS = $(LIBIO_C_SOURCES:.c=.o) $(LIBIO_ASM_SOURCES:.s=.o)
 libio.a: $(LIBIO_OBJECTS)
 	$(AR) crv $@ $^

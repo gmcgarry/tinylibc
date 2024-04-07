@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <stdarg.h>
 
 int

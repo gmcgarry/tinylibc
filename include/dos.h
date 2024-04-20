@@ -1,5 +1,5 @@
-#ifndef _DOS_H_
-#define _DOS_H_
+#ifndef _DOS_H
+#define _DOS_H
 
 struct date {
 	int da_day;

@@ -1,16 +1,12 @@
 #include <stdio.h>
 
-#ifdef LIBIO
-#include <conio.h>
-#else
 #include <unistd.h>
-#endif
 
 struct _io_buf *_io_table[_NFILES];
 
-struct _io_buf _stdin = { 0, IO_READMODE };
 struct _io_buf _stdout = { 0, IO_WRITEMODE };
-struct _io_buf _stderr = { 0, IO_WRITEMODE };
+struct _io_buf _stdin = { 1, IO_READMODE };
+struct _io_buf _stderr = { 2, IO_WRITEMODE };
 
 int
 fgetc(FILE *fp)
@@ -20,12 +16,8 @@ fgetc(FILE *fp)
 	if ((fp->_flags & IO_READMODE) == 0)
 		return EOF;
 
-#ifdef LIBIO
-	ch = getche();
-#else
 	if (read(fp->_fd, &ch, 1) != 1)
 		return EOF;
-#endif
 
 	return (int)ch;
 }
@@ -38,12 +30,8 @@ fputc(int _c, FILE *fp)
 	if ((fp->_flags & IO_WRITEMODE) == 0)
 		return EOF;
 
-#ifdef LIBIO
-	putch(ch);
-#else
 	if (write(fp->_fd, &ch, 1) != 1)
 		return EOF;
-#endif
 
 	return _c;
 }
@@ -58,20 +46,12 @@ fputs(const char *s, FILE *fp)
 		return EOF;
 
 	while ((c = *s++) != '\0') {
-#ifdef LIBIO
-		putch(c);
-#else
 		if (write(fp->_fd, &c, 1) != 1)
 			rv = EOF;
-#endif
 	}
 	c = '\n';
-#ifdef LIBIO
-	putch(c);
-#else
 	if (write(fp->_fd, &c, 1) != 1)
 		rv = EOF;
-#endif
 
 	return rv;
 }

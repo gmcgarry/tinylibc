@@ -80,7 +80,7 @@ labs(long j)
 	return(j < 0 ? -j : j);
 }
 
-void *
+const void *
 bsearch(const void *key, const void *base, size_t nmemb, size_t size, int (*_compar)(const void *, const void *))
 {
 	for (const char *left = base; nmemb; ) {

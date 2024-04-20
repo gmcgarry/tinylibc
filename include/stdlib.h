@@ -32,7 +32,7 @@ extern int setenv(const char *_name, const char *_value, int _overwrite);
 extern int unsetenv(const char *_name);
 extern int putenv(char *_string);
 extern int system(const char *_string);
-extern void* bsearch(const void *_key, const void *_base, size_t _nmemb, size_t _size, int (*_compar)(const void *, const void *));
+extern const void* bsearch(const void *_key, const void *_base, size_t _nmemb, size_t _size, int (*_compar)(const void *, const void *));
 extern void qsort(void *_base, size_t _nmemb, size_t _size, int (*_compar)(const void *, const void *));
 extern int abs(int _j);
 extern div_t div(int _numer, int _denom);

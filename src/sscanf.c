@@ -9,7 +9,7 @@ sscanf(const char *str, const char *format, ...)
 	
 	va_start(args, format);
 	for ( ; *format != '\0'; format++) {
-		if (*format == '%' && format[1] == 'd') {
+		if (format[0] == '%' && format[1] == 'd') {
 			int positive;
 			int value;
 			int *valp;

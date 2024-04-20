@@ -65,4 +65,7 @@ extern int fclose(FILE *);
 int printf(const char* format, ...);
 int sprintf(char *str, const char *format, ...);
 
+int scanf(const char *restrict format, ...);
+int sscanf(const char *restrict str, const char *restrict format, ...);
+
 #endif

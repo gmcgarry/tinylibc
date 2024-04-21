@@ -66,6 +66,8 @@ vsprintf(char * buf, const char * fmt, va_list va)
 redo_spec:
 		c  = *fmt++;
 		switch (c) {
+		case 'l':
+			goto redo_spec;	/* XXGJM just ignore */
 		case '%':
 			*(buf++) = c;
 			break;

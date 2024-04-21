@@ -7,7 +7,7 @@ int toupper(int c)
 
 int tolower(int c)
 {
-	return isupper(c) ? c - 'a' + 'A' : c;
+	return isupper(c) ? c - 'A' + 'a' : c;
 }
 
 int isalnum(int c)

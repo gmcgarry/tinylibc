@@ -49,9 +49,6 @@ fputs(const char *s, FILE *fp)
 		if (write(fp->_fd, &c, 1) != 1)
 			rv = EOF;
 	}
-	c = '\n';
-	if (write(fp->_fd, &c, 1) != 1)
-		rv = EOF;
 
 	return rv;
 }

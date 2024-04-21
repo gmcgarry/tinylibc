@@ -13,7 +13,7 @@
 #define CSR_ENABLE_Msk		(1UL)				/*!< SysTick CSR: ENABLE Mask */
 
 int 
-SysTick_Config(uint32_t ticks)
+SYSTICK_init(uint32_t ticks)
 {
 	if ((ticks - 1UL) > RVR_RELOAD_Msk)
 		return 1;

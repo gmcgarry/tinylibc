@@ -11,9 +11,6 @@
 typedef struct { int quot, rem; } div_t;
 typedef struct { long quot, rem; } ldiv_t;
 
-extern double atof(const char *_nptr);
-extern int atoi(const char *_nptr);
-extern long atol(const char *_nptr);
 extern double strtod(const char *_nptr, char **_endptr);
 extern long strtol(const char *_nptr, char **_endptr, int _base);
 extern unsigned long strtoul(const char *_nptr, char **_endptr, int _base);
@@ -38,13 +35,19 @@ extern int abs(int _j);
 extern div_t div(int _numer, int _denom);
 extern long labs(long _j);
 extern ldiv_t ldiv(long _numer, long _denom);
-extern int mblen(const char *_s, size_t _n);
 extern int mbtowc(wchar_t *_pwc, const char *_s, size_t _n);
 extern int wctomb(char *_s, wchar_t _wchar);
 extern size_t mbstowcs(wchar_t *_pwcs, const char *_s, size_t _n);
 extern size_t wcstombs(char *_s, const wchar_t *_pwcs, size_t _n);
 
 /* Extensions (not part of the standard) */
+
+#if 0
+extern double atof(const char *_nptr);
+extern int atoi(const char *_nptr);
+extern long atol(const char *_nptr);
+extern int mblen(const char *_s, size_t _n);
+#endif
 
 #define atof(n)   strtod(n, (char **)NULL)
 #define atoi(n)   ((int)strtol(n, (char **)NULL, 10))

@@ -98,3 +98,31 @@ bsearch(const void *key, const void *base, size_t nmemb, size_t size, int (*_com
 
 	return 0;
 }
+
+#include <ctype.h>
+
+long
+strtol(const char *nptr, char **endptr, int base)
+{
+	while (*nptr && isspace(*nptr))
+		nptr++;
+
+	int positive = 1;
+	if (*nptr == '-')
+		positive = 0;
+	if (*nptr == '-' || *nptr == '+')
+		nptr++;
+
+	long value = 0;
+	while (isdigit(*nptr)) {
+		value = (value * base) - (*nptr - '0');
+		nptr++;
+	}
+	if (positive)
+		value = -value;
+
+	if (endptr)
+		*endptr = (void *)nptr;
+
+	return value;
+}

@@ -16,5 +16,3 @@
 __SYSCALL1(_exit)
 __SYSCALL1(write)
 __SYSCALL1(read)
-
-unsigned long __heap_start;

@@ -30,6 +30,12 @@ kbhit(void)
 }
 
 void
+delay(unsigned int ms)
+{
+	ets_delay_us(ms * 1000);
+}
+
+void
 _exit(int c)
 {
 	while (1)

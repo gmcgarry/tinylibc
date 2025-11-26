@@ -40,10 +40,10 @@ typedef uint64_t        uintmax_t;
 
 typedef int32_t         intptr_t;
 typedef uint32_t        uintptr_t;
-#ifndef __ptrdiff_t_defined
+#if !defined(__ptrdiff_t_defined) && !defined(__DEFINED_ptrdiff_t)
 typedef int32_t         ptrdiff_t;
 #endif
-#ifndef __size_t_defined
+#if !defined(__size_t_defined) && !defined(__DEFINED_size_t)
 typedef uint32_t        size_t;
 #endif
 typedef int32_t         ssize_t;

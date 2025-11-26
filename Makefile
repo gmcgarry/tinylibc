@@ -1,30 +1,31 @@
-#TARGET := 'linux'
-#TARGET := 'stm32'
-TARGET := 'esp8266'
+#TARGET ?= 'linux'
+#TARGET ?= 'stm32'
+#TARGET ?= 'esp8266'
+#TARGET ?= 'm68k'
 
-ifeq ($(TARGET), 'stm32')
+INC = -nostdinc -I./include -I./fatfs
+
+ifeq ($(TARGET), stm32)
 	ARCH=arm
 	PLATFORM=$(ARCH)-none-eabi
 	CC = $(PLATFORM)-gcc
 	CFLAGS = -mfloat-abi=soft -mthumb -mcpu=cortex-m3 -fno-builtin
 	AS = $(PLATFORM)-as
-	INC = -I/usr/lib/gcc/arm-none-eabi/12.2.1/include/
-	CFLAGS += -DLIBIO
+	INC +=-I/usr/lib/gcc/arm-none-eabi/12.2.1/include/
 	MACH=stm32
 endif
 
-ifeq ($(TARGET), 'esp8266')
+ifeq ($(TARGET), esp8266)
 	ARCH=xtensa
 	PLATFORM=xtensa-lx106-elf
 	CC = $(PLATFORM)-gcc
 	CFLAGS = -fno-builtin -fno-inline-functions -nostdlib -mlongcalls -mtext-section-literals
 	AS = $(PLATFORM)-as
-	INC = -I/usr/local/xtensa-lx106-elf/lib/gcc/xtensa-lx106-elf/8.4.0/include/
-	CFLAGS += -DLIBIO
+	INC += -I/usr/local/xtensa-lx106-elf/lib/gcc/xtensa-lx106-elf/8.4.0/include/
 	MACH=esp8266
 endif
 
-ifeq ($(TARGET), 'm68k')
+ifeq ($(TARGET), m68k)
 	ARCH=m68k
 	PLATFORM=$(ARCH)-linux-gnu
 	CC = $(PLATFORM)-pcc
@@ -32,11 +33,16 @@ ifeq ($(TARGET), 'm68k')
 	CFLAGS = -mcpu=68000 -msoft-float -O
 endif
 
-ifeq ($(TARGET), 'linux')
+ifeq ($(TARGET), linux)
 	ARCH=x86_64
 	PLATFORM=$(ARCH)-linux-gnu
-	CC = amd64-linux-pcc
+#	CC=pcc
+#	INC += -I/usr/local/lib/pcc/x86_64-pc-linux-gnu/1.2.0.DEVEL/include
+	CC=gcc
+	INC += -I/usr/lib/gcc/x86_64-linux-gnu/12/include/
+	MACH=linux
 endif
+
 
 ifeq ($(TARGET), 'pdp11')
 	ARCH=pdp11
@@ -46,12 +52,11 @@ endif
 CC ?= $(PLATFORM)-pcc
 AS ?= $(PLATFORM)-as
 
+
 MACH ?= $(ARCH)
-INC ?= -I/usr/local/lib/pcc/$(PLATFORM)/1.2.0.DEVEL/include/
 
 ASFLAGS =
 CFLAGS += -Wall -O
-INC += -nostdinc -I./include
 
 SRCS = \
 	src/ctype.c \

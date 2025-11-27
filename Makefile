@@ -4,7 +4,7 @@
 #TARGET ?= m68k
 TARGET ?= $(shell uname -s | tr '[:upper:]' '[:lower:]')
 
-INC = -nostdinc -I./include -I./fatfs
+INC = -nostdinc -I./include
 
 ifeq ($(TARGET), stm32)
 	ARCH=arm
@@ -46,7 +46,18 @@ ifeq ($(TARGET), linux)
 	CFLAGS += -g
 endif
 
-ifeq ($(TARGET), 'pdp11')
+ifeq ($(TARGET), darwin)
+	SDK=$(shell xcrun --show-sdk-path)
+	TOOLCHAIN=$(shell xcrun --show-toolchain-path)
+	ARCH=arm64-darwin
+	CC=clang
+	CFLAGS = -fno-builtin
+	INC += -I$(SDK)/usr/include -I$(TOOLCHAIN)/usr/include -I$(TOOLCHAIN)/usr/lib/clang/17/include
+	MACH=osx
+	CFLAGS += -g
+endif
+
+ifeq ($(TARGET), pdp11)
 	ARCH=pdp11
 	PLATFORM=$(ARCH)-none
 endif

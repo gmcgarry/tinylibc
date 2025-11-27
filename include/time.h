@@ -12,7 +12,7 @@ typedef unsigned long clock_t;
 extern char *CLOCKS_PER_SEC_;
 extern clock_t clock(void);
 
-typedef uint32_t time_t;
+typedef unsigned long time_t;
 
 struct tm {
 	int8_t tm_sec;

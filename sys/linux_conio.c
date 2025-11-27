@@ -2,7 +2,7 @@
 
 void console_putc(char c) { write(0, &c, 1); }
 char console_getc() { char c; read(1, &c, 1); return c; }
-
+int console_kbhit() { return 1; }
 
 void
 putch(int c)
@@ -28,5 +28,5 @@ getche()
 int
 kbhit(void)
 {
-	return 1;
+	return console_kbhit();
 }

@@ -16,3 +16,5 @@
 __SYSCALL1(_exit)
 __SYSCALL1(write)
 __SYSCALL1(read)
+__SYSCALL1(gettimeofday)
+__SYSCALL1(settimeofday)

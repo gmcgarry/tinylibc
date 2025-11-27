@@ -1,7 +1,8 @@
-#TARGET ?= 'linux'
-#TARGET ?= 'stm32'
-#TARGET ?= 'esp8266'
-#TARGET ?= 'm68k'
+#TARGET ?= linux
+#TARGET ?= stm32
+#TARGET ?= esp8266
+#TARGET ?= m68k
+TARGET ?= $(shell uname -s | tr '[:upper:]' '[:lower:]')
 
 INC = -nostdinc -I./include -I./fatfs
 
@@ -42,8 +43,8 @@ ifeq ($(TARGET), linux)
 	CFLAGS = -fno-builtin
 	INC += -I/usr/lib/gcc/x86_64-linux-gnu/12/include/
 	MACH=linux
+	CFLAGS += -g
 endif
-
 
 ifeq ($(TARGET), 'pdp11')
 	ARCH=pdp11
@@ -92,8 +93,8 @@ install_headers:
 libc.a:	$(OBJS)
 	$(AR) crv $@ $^
 
-LIBSYS_C_SOURCES = $(wildcard sys/$(MACH)_*.c)
-LIBSYS_ASM_SOURCES = $(wildcard sys/$(MACH)_*.s)
+LIBSYS_C_SOURCES = $(wildcard sys/$(MACH)_*.c) $(wildcard sys/$(ARCH)_*.c)
+LIBSYS_ASM_SOURCES = $(wildcard sys/$(MACH)_*.s) $(wildcard sys/$(MARCH)_*.c)
 LIBSYS_OBJECTS = $(LIBSYS_C_SOURCES:.c=.o) $(LIBSYS_ASM_SOURCES:.s=.o)
 libsys.a: $(LIBSYS_OBJECTS)
 	$(AR) crv $@ $^

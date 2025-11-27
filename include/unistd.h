@@ -24,7 +24,7 @@ enum
 extern char** environ;
 
 extern int brk(void* ptr);
-extern void* sbrk(int increment);
+extern void* sbrk(intptr_t increment);
 extern pid_t fork(void);
 extern pid_t getpid(void);
 extern pid_t wait(int* wstatus);

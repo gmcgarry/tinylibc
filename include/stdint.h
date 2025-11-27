@@ -1,5 +1,5 @@
-#ifndef _STDINT_H
-#define _STDINT_H
+#ifndef _STDINT_H_
+#define _STDINT_H_
 
 #include <stddef.h>
 
@@ -38,12 +38,16 @@ typedef uint64_t        uintmax_t;
 
 /* Pointers can be either 16 or 32 bits. */
 
+#if !defined(_INTPTR_T)
 typedef int32_t         intptr_t;
+#endif
+#if !defined(_UINTPTR_T)
 typedef uint32_t        uintptr_t;
-#if !defined(__ptrdiff_t_defined) && !defined(__DEFINED_ptrdiff_t)
+#endif
+#if !defined(__ptrdiff_t_defined) && !defined(__DEFINED_ptrdiff_t) && !defined(_PTRDIFF_T)
 typedef int32_t         ptrdiff_t;
 #endif
-#if !defined(__size_t_defined) && !defined(__DEFINED_size_t)
+#if !defined(__size_t_defined) && !defined(__DEFINED_size_t) & !defined(_SIZE_T)
 typedef uint32_t        size_t;
 #endif
 typedef int32_t         ssize_t;

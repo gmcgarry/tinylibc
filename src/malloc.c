@@ -1,7 +1,5 @@
+#include <stdio.h>
 #include <unistd.h>
-
-extern void *__heap_start;
-extern void *__heap_end;
 
 #define MAGIC	0xDEAD
 
@@ -11,6 +9,8 @@ struct block {
 	int size;
 };
 
+extern void *__heap_start;
+extern void *__heap_end;
 static void *lastaddr = &__heap_start;
 
 void
@@ -78,21 +78,4 @@ __malloc_cleanup()
 			printf("WARNING: leaked memory block at %u (%d bytes)\n", (unsigned int)p, (int)block->size);
 		p = p + block->size;
 	}
-}
-
-static void *heaptop = &__heap_start;
-
-int
-brk(void *addr)
-{
-	heaptop = addr;
-	return 0;
-}
-
-void *
-sbrk(intptr_t increment)
-{
-	void *last = heaptop;
-	heaptop += increment;
-	return last;
 }

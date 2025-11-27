@@ -16,3 +16,24 @@ getppid(void)
 {
 	return 0;
 }
+
+extern void *__heap_start;
+extern void *__heap_end;
+
+static void *heaptop = &__heap_start;
+
+int
+brk(void *addr)
+{
+	heaptop = addr;
+	return 0;
+}	       
+		
+void *  
+sbrk(intptr_t increment)
+{       
+	void *last = heaptop;
+	heaptop += increment;
+	return last;
+}       
+

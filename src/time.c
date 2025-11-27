@@ -1,3 +1,4 @@
+#include <stdio.h>	// sprintf
 #include <time.h>
 
 /*
@@ -55,4 +56,28 @@ localtime(const time_t *timep)
 	tm.tm_isdst = 0; // TODO
 
 	return &tm;
+}
+
+static const char *WeekDays[7] = {
+	"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
+};
+
+static const char *Months[12] = {
+	"Jan", "Feb", "Mar", "Apr", "May", "Jun",
+	"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+};
+
+void
+asctime_r(const struct tm *tp, char *buf)
+{
+//	sprintf(buf, "%.3s %.3s%3d %.2d:%.2d:%.2d %d\n", WeekDays[tp->tm_wday], Months[tp->tm_mon], tp->tm_mday, tp->tm_hour, tp->tm_min, tp->tm_sec, 1900 + tp->tm_year);
+	sprintf(buf, "%s %s %d %02d:%02d:%02d %d\n", WeekDays[tp->tm_wday], Months[tp->tm_mon], tp->tm_mday, tp->tm_hour, tp->tm_min, tp->tm_sec, 1900 + tp->tm_year);
+}
+
+char *
+asctime(const struct tm *tp)
+{
+	static char buf[64];
+	asctime_r(tp, buf);
+	return buf;
 }

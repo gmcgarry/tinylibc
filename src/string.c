@@ -58,10 +58,10 @@ memcmp(const void *_s1, const void *_s2, size_t n)
 	const unsigned char *s2 = _s2;
 
 	unsigned  char c1, c2;
-	while ((c1 = *s1++) == (c2 = *s2++) && n--) {
-		if (c1 != c2)
-			return c1 < c2 ? -1 : 1;
-	}
+	while ((c1 = *s1++) == (c2 = *s2++) && n--)
+		;
+	if (c1 != c2)
+		return c1 < c2 ? -1 : 1;
 	return 0;
 }
 

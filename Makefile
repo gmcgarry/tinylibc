@@ -39,6 +39,7 @@ ifeq ($(TARGET), linux)
 #	CC=pcc
 #	INC += -I/usr/local/lib/pcc/x86_64-pc-linux-gnu/1.2.0.DEVEL/include
 	CC=gcc
+	CFLAGS = -fno-builtin
 	INC += -I/usr/lib/gcc/x86_64-linux-gnu/12/include/
 	MACH=linux
 endif
